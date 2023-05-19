@@ -1,0 +1,19 @@
+.excalidraw {
+  .Island {
+    // --padding: 0;
+    // box-sizing: border-box;
+    // background-color: var(--island-bg-color);
+    // box-shadow: var(--shadow-island);
+    // border-radius: var(--border-radius-lg);
+    // padding: calc(var(--padding) * var(--space-factor));
+    // position: relative;
+    // transition: box-shadow 0.5s ease-in-out;
+    background: #FFFFFF;
+    border: 1px solid rgba(238,238,238,0.50);
+    box-shadow: 0 2px 8px 0 rgba(3, 2, 2, 0.04);
+    border-radius: 4px;
+    &.zen-mode {
+      box-shadow: none;
+    }
+  }
+}
