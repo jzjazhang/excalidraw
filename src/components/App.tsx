@@ -3583,7 +3583,12 @@ class App extends React.Component<AppProps, AppState> {
     // pointerDown event, ends with a pointerUp event (or another pointerDown)
     const pointerDownState = this.initialPointerDownState(event);
 
+    if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
+      return;
+    }
+
     if (this.handleCanvasPanUsingWheelOrSpaceDrag(event)) {
+      this.props?.onPointerDown?.(this.state.activeTool, pointerDownState);
       return;
     }
 
@@ -3600,17 +3605,8 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    if (this.handleCanvasPanUsingWheelOrSpaceDrag(event)) {
-      this.props?.onPointerDown?.(this.state.activeTool, pointerDownState);
-      return;
-    }
-
     this.clearSelectionIfNotUsingSelection();
     this.updateBindingEnabledOnPointerMove(event);
-
-    if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
-      return;
-    }
 
     const allowOnPointerDown =
       !this.state.penMode ||
