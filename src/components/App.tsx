@@ -3583,12 +3583,14 @@ class App extends React.Component<AppProps, AppState> {
     // pointerDown event, ends with a pointerUp event (or another pointerDown)
     const pointerDownState = this.initialPointerDownState(event);
 
-    if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
-      return;
-    }
-
     if (this.handleCanvasPanUsingWheelOrSpaceDrag(event)) {
-      this.props?.onPointerDown?.(this.state.activeTool, pointerDownState);
+      if (this.state.viewModeEnabled) {
+        pointerDownState.hit.element = this.getElementAtPosition(
+          pointerDownState.origin.x,
+          pointerDownState.origin.y,
+        );
+        this.props?.onPointerDown?.(this.state.activeTool, pointerDownState);
+      }
       return;
     }
 
@@ -3607,6 +3609,10 @@ class App extends React.Component<AppProps, AppState> {
 
     this.clearSelectionIfNotUsingSelection();
     this.updateBindingEnabledOnPointerMove(event);
+
+    if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
+      return;
+    }
 
     const allowOnPointerDown =
       !this.state.penMode ||
@@ -4007,6 +4013,7 @@ class App extends React.Component<AppProps, AppState> {
     event: React.PointerEvent<HTMLCanvasElement>,
     pointerDownState: PointerDownState,
   ): boolean => {
+    debugger
     if (this.state.activeTool.type === "selection") {
       const elements = this.scene.getNonDeletedElements();
       const selectedElements = getSelectedElements(elements, this.state);
